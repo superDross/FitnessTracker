@@ -6,6 +6,7 @@ tags
 *pyc
 *txt
 *.swp
+*.swo
 *.log
 *.pkl
 temp_test/
