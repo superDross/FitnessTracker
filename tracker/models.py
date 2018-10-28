@@ -59,7 +59,7 @@ class Profile(User):
     def birth_date(self, value):
         self._birth_date = value
         days_diff = datetime.date.today() - self._birth_date
-        self.age = round((days_diff / 365).days)
+        self.age = int((days_diff / 365).days)
 
     def all_exercises(self):
         ''' Returns all default and user created exercises.'''
