@@ -1,5 +1,8 @@
+# pipenv and vim specific file
 Pipfile*
 tags
+*.vim
+
 *pyc
 *txt
 *.swp
