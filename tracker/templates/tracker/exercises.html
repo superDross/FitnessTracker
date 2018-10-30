@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+{% extends 'base_generic.html' %}
+
+{% block content %}
+
+<h2> {{ profile.first_name }} {{ profile.last_name }} </h2>
+<h3> {{ profile.username }} </h3>
+  {% for exercise in profile.all_exercises %}
+    {# have a link to the individual exercises here #}
+    <li>{{ exercise }} </li>
+  {% endfor %}
+{% endblock %} 

@@ -2,5 +2,6 @@ from django.urls import path
 from tracker import views
 
 urlpatterns = [
-    path('exercise-list/', views.ExerciseView.as_view(), name='exercises'),
+    path('<int:pk>/profile/', views.profile_page, name='profile_page'),
+    path('<int:pk>/exercises/', views.exercise_list, name='exercises'),
 ]

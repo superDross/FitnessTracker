@@ -1,15 +1,25 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .models import Exercise
+from .models import Exercise, Profile
 
 
-class ExerciseView(LoginRequiredMixin, generic.ListView):
-    model = Exercise
-    template_name = 'tracker/exercise_list.html'
-    context_object_name = 'exercise_list'
+def profile_page(request, pk):
+    profile = get_object_or_404(Profile, pk=pk)
+    height = f'{profile.height}{profile.height_unit}'
+    weight = f'{profile.weight}{profile.weight_unit}'
+    # parse height and weight units
+    return render(request=request,
+                  template_name='tracker/profile_page.html',
+                  context={'profile': profile,
+                           'height': height,
+                           'weight': weight})
 
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        return queryset.filter(profile__username=self.kwargs['username'])
+
+def exercise_list(request, pk):
+    ''' List all exercises of a given profile.'''
+    profile = get_object_or_404(Profile, pk=pk)
+    return render(request=request,
+                  template_name='tracker/exercises.html',
+                  context={'profile': profile})

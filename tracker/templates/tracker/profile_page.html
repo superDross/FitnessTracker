@@ -1,0 +1,16 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+
+<h2>Profile Details</h2>
+    <li>First Name:  {{ profile.first_name }} </li>
+    <li>Last Name:  {{ profile.last_name }}</li>
+    <li>User Name: {{ profile.username }}</li>
+    <li>Email: {{ profile.email }}</li>
+    <li>DOB:  {{ profile.birth_date }}</li>
+    <li>Country: {{ profile.country }}</li>
+    <li>Time Zone: {{ profile.time_zone }}</li>
+    <li>Height: {{ height }}</li>
+    <li>Weight: {{ weight }}</li>
+
+{% endblock %}

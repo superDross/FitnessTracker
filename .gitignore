@@ -2,6 +2,7 @@
 Pipfile*
 tags
 *.vim
+sessions/
 
 *pyc
 *txt
