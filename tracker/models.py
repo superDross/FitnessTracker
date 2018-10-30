@@ -17,6 +17,8 @@ class Profile(User):
 
     TIMEZONES = tuple(zip(pytz.all_timezones, pytz.all_timezones))
 
+    height_unit = models.CharField(max_length=50, null=True, blank=True)
+    weight_unit = models.CharField(max_length=50, null=True, blank=True)
     _height = MeasurementField(measurement=Distance)
     _weight = MeasurementField(measurement=Weight)
     _birth_date = models.DateField(null=True, blank=True)
@@ -35,19 +37,21 @@ class Profile(User):
 
     @property
     def height(self):
-        return self._height
+        return getattr(self._height, self.height_unit)
 
     @height.setter
     def height(self, value):
-        self._height = eval(f'Distance({value})')
+        arg = f'{self.height_unit}={value}'
+        self._height = eval(f'Distance({arg})')
 
     @property
     def weight(self):
-        return self._weight
+        return getattr(self._weight, self.weight_unit)
 
     @weight.setter
     def weight(self, value):
-        self._weight = eval(f'Weight({value})')
+        arg = f'{self.weight_unit}={value}'
+        self._weight = eval(f'Weight({arg})')
         bmi = (self._weight.kg / self.height.m) / self.height.m
         self.bmi = bmi
 
