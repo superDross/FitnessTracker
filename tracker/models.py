@@ -19,8 +19,7 @@ class Profile(models.Model):
 
     user = models.OneToOneField(User,
                                 on_delete=models.CASCADE,
-                                related_name='profile',
-                                parent_link=True)
+                                related_name='profile')
     height_unit = models.CharField(max_length=50, null=True, blank=True)
     weight_unit = models.CharField(max_length=50, null=True, blank=True)
     _height = MeasurementField(measurement=Distance)
@@ -34,7 +33,7 @@ class Profile(models.Model):
     age = models.IntegerField(default=0)
 
     def __str__(self):
-        return f'{self.pk}'
+        return f'{self.user.username} - {self.pk}'
 
     @property
     def height(self):
