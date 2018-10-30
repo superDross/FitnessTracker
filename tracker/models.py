@@ -12,11 +12,16 @@ import datetime
 import pytz
 
 
-class Profile(User):
-    ''' Proxy model for User.'''
+class Profile(models.Model):
+    ''' Profile model for User.'''
 
     TIMEZONES = tuple(zip(pytz.all_timezones, pytz.all_timezones))
 
+    user = models.OneToOneField(User,
+                                on_delete=models.CASCADE,
+                                related_name='profile',
+                                primary_key=True,
+                                parent_link=True)
     height_unit = models.CharField(max_length=50, null=True, blank=True)
     weight_unit = models.CharField(max_length=50, null=True, blank=True)
     _height = MeasurementField(measurement=Distance)
@@ -29,11 +34,8 @@ class Profile(User):
         choices=TIMEZONES, default='UTC')
     age = models.IntegerField(default=0)
 
-    class Meta:
-        ordering = ['last_name', 'first_name']
-
     def __str__(self):
-        return f'{self.username} - {self.pk}'
+        return f'{self.user.username} - {self.pk}'
 
     @property
     def height(self):
@@ -52,8 +54,7 @@ class Profile(User):
     def weight(self, value):
         arg = f'{self.weight_unit}={value}'
         self._weight = eval(f'Weight({arg})')
-        bmi = (self._weight.kg / self.height.m) / self.height.m
-        self.bmi = bmi
+        self.bmi = (self._weight.kg / self._height.m) / self._height.m
 
     @property
     def birth_date(self):
@@ -67,7 +68,7 @@ class Profile(User):
 
     def all_exercises(self):
         ''' Returns all default and user created exercises.'''
-        admin = Profile.objects.get(username='david')
+        admin = Profile.objects.get(user__username='davidr')
         return Exercise.objects.filter(Q(created_by=self) |
                                        Q(created_by=admin))
 
