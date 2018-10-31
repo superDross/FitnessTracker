@@ -1,12 +1,12 @@
 from django.shortcuts import render, get_object_or_404
-from django.views import generic
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 
 from .models import Exercise, Profile
 
 
-def profile_page(request, pk):
-    profile = get_object_or_404(Profile, pk=pk)
+@login_required
+def profile_page(request):
+    profile = get_object_or_404(Profile, user=request.user)
     height = f'{profile.height}{profile.height_unit}'
     weight = f'{profile.weight}{profile.weight_unit}'
     # parse height and weight units
@@ -17,9 +17,9 @@ def profile_page(request, pk):
                            'weight': weight})
 
 
-def exercise_list(request, pk):
+def exercise_list(request):
     ''' List all exercises of a given profile.'''
-    profile = get_object_or_404(Profile, pk=pk)
+    profile = get_object_or_404(Profile, user=request.user)
     return render(request=request,
                   template_name='tracker/exercises.html',
                   context={'profile': profile})

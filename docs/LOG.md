@@ -1,0 +1,1 @@
+- Trying to alter it the views/urls so I don't have to use pk in the url address.
