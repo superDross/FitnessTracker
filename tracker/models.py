@@ -152,8 +152,8 @@ class Exercise(models.Model):
 class Set(models.Model):
     ''' A set of repetitions of an exercise.'''
     reps = models.IntegerField(default=1)
-    weight = MeasurementField(measurement=Weight)
-    distance = MeasurementField(measurement=Distance)
+    _weight = MeasurementField(measurement=Weight, default=0)
+    _distance = MeasurementField(measurement=Distance, default=0)
     time = models.TimeField(null=True, blank=True)
     bpm = models.IntegerField(default=0, null=True, blank=True)
 
@@ -209,3 +209,6 @@ class ExerciseInstance(models.Model):
 
     def __str__(self):
         return f'{self.exercise.name} ({self.id})'
+
+    def get_absolute_url(self):
+        return reverse('activity', args=[str(self.pk)])
