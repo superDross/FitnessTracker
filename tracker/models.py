@@ -151,7 +151,7 @@ class Set(models.Model):
     bpm = models.IntegerField(default=0, null=True, blank=True)
 
     def __str__(self):
-        return f'Reps - {self.number}'
+        return f'Reps - {self.reps}'
 
     @property
     def weight(self):
@@ -168,9 +168,6 @@ class Set(models.Model):
     @distance.setter
     def distance(self, value):
         self._distance = eval(f'Distance({value})')
-
-    def __str__(self):
-        return f'Sets - {self.number}'
 
 
 class ExerciseInstance(models.Model):
