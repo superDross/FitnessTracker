@@ -1,0 +1,22 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+
+<h2> {{ exercise.name }} </h2>
+<h4>Description:</h4>
+  <p>  {{ exercise.description }} </p>
+<h4>Video Demonstration:</h4>
+  <p><iframe id="video" width="420" height="315" src={{ exercise.video }}></iframe></p>
+<h4>Type:</h4>
+  {# get_type_diplay displays the verbose version of the type field #}
+  <p> {{ exercise.get_type_display }} </p>
+<h4>Classifications:</h4>
+  {% for class in exercise.classification.all %}
+    <p> {{ class.name }} </p>
+  {% endfor %}
+<h4>Primary Muscles Used:</h4>
+  {% for muscle in exercise.muscles.all %}
+    <p> {{ muscle.muscle }} </p>
+  {% endfor %}
+
+{% endblock %}

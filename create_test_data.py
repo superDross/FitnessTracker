@@ -55,6 +55,12 @@ push.save()
 pull = Classification.objects.create(name='Pull')
 pull.save()
 
+upper = Classification.objects.create(name='Upper')
+upper.save()
+
+lower = Classification.objects.create(name='Lower')
+lower.save()
+
 
 # Muscle Groups
 lats = MuscleGroup.objects.create(group='Back',
@@ -75,31 +81,34 @@ pec_min.save()
 
 
 # Exercises
-yt_link = 'https://www.youtube.com/watch?v=IODxDxX7oi4'
+yt_link = 'https://www.youtube.com/embed/IODxDxX7oi4'
 push_up = Exercise.objects.create(name='Push Up',
                                   video=yt_link,
                                   type='i',
                                   created_by=owner)
 push_up.muscles.add(pec_maj, pec_min)
-push_up.classification.add(push)
+push_up.classification.add(push, upper)
+push_up.description = 'A conditioning exercise performed in a prone position by raising and lowering the body with the straightening and bending of the arms while keeping the back straight and supporting the body on the hands and toes.'
 push_up.save()
 
-yt_link = "https://www.youtube.com/watch?v=eGo4IYlbE5g"
+yt_link = "https://www.youtube.com/embed/eGo4IYlbE5g"
 pull_up = Exercise.objects.create(name='Pull Up',
                                   video=yt_link,
                                   type='i',
                                   created_by=owner)
 pull_up.muscles.add(lats, bicep, traps)
-pull_up.classification.add(pull)
+pull_up.classification.add(pull, upper)
+pull_up.description = 'Hang from a bar with a pronated (palms facing away) grip. Place your hands about shoulder-width apart. Pull up and raise your body until your chin reaches the same height as the bar. Avoid swinging or kipping as you pull. Lower yourself back to the starting position.'
 pull_up.save()
 
-yt_link = 'https://www.youtube.com/watch?v=2z8JmcrW-As&t=181s'
+yt_link = 'https://www.youtube.com/embed/2z8JmcrW-As&t=181s'
 dip = Exercise.objects.create(name='Dip',
                               video=yt_link,
                               type='i',
                               created_by=owner)
 dip.muscles.add(pec_maj, pec_min)
-dip.classification.add(push)
+dip.classification.add(push, upper)
+dip.description = 'Position your hands shoulder-width apart on a secured bench or stable chair. Slide your butt off the front of the bench with your legs extended out in front of you. Straighten your arms, keeping a little bend in your elbows to keep tension on your triceps and off your elbow joints.'
 dip.save()
 
 

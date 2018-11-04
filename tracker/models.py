@@ -1,15 +1,16 @@
 import uuid
+import datetime
+import pytz
 
 from django.db import models
 from django.db.models import Q
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 from django_countries.fields import CountryField
 from django_measurement.models import MeasurementField
 
 from measurement.measures import Distance, Weight
-import datetime
-import pytz
 
 
 class Profile(models.Model):
@@ -64,6 +65,9 @@ class Profile(models.Model):
         self._birth_date = value
         days_diff = datetime.date.today() - self._birth_date
         self.age = int((days_diff / 365).days)
+
+    def get_absolute_url(self):
+        return reverse('profile', args=[str(self.pk)])
 
     def all_exercises(self):
         ''' Returns all default and user created exercises.'''
@@ -140,6 +144,9 @@ class Exercise(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('exercise', args=[str(self.id)])
 
 
 class Set(models.Model):
