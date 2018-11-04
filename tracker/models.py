@@ -52,7 +52,8 @@ class Profile(models.Model):
     def weight(self, value):
         arg = f'{self.weight_unit}={value}'
         self._weight = eval(f'Weight({arg})')
-        self.bmi = (self._weight.kg / self._height.m) / self._height.m
+        bmi = (self._weight.kg / self._height.m) / self._height.m
+        self.bmi = round(bmi, 2)
 
     @property
     def birth_date(self):
@@ -125,19 +126,17 @@ class Exercise(models.Model):
     video = models.URLField(max_length=500,
                             help_text='Video demonstrating exercise.')
 
-    classification = models.ForeignKey(Classification,
-                                       on_delete=models.SET_NULL,
-                                       null=True)
+    classification = models.ManyToManyField(Classification)
     muscles = models.ManyToManyField(MuscleGroup)
     progression = models.OneToOneField('self',
                                        on_delete=models.SET_NULL,
                                        null=True,
                                        blank=True)
 
-    created_by = models.OneToOneField(Profile,
-                                      on_delete=models.SET_NULL,
-                                      null=True,
-                                      blank=True)
+    created_by = models.ForeignKey(Profile,
+                                   on_delete=models.SET_NULL,
+                                   null=True,
+                                   blank=True)
 
     def __str__(self):
         return self.name
@@ -146,8 +145,8 @@ class Exercise(models.Model):
 class Set(models.Model):
     ''' A set of repetitions of an exercise.'''
     reps = models.IntegerField(default=1)
-    _weight = MeasurementField(measurement=Weight)
-    _distance = MeasurementField(measurement=Distance)
+    weight = MeasurementField(measurement=Weight)
+    distance = MeasurementField(measurement=Distance)
     time = models.TimeField(null=True, blank=True)
     bpm = models.IntegerField(default=0, null=True, blank=True)
 

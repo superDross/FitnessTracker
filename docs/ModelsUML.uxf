@@ -52,7 +52,7 @@ fontfamily=SansSerif //possible: SansSerif,Serif,Monospaced
 +name: String
 +description: String
 +video: URL
-+class: Classification[1]
++class: Classification[1..*]
 +group: MuscleGroup[1..*]
 +progressions: self[1..*]
 +type: EXERCISE_TYPE
@@ -125,7 +125,7 @@ m2=0..*
       <w>560</w>
       <h>50</h>
     </coordinates>
-    <panel_attributes>m1=1
+    <panel_attributes>m1=1..*
 m2=0..*
 </panel_attributes>
     <additional_attributes>540.0;20.0;10.0;20.0</additional_attributes>
