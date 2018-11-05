@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.db.models.query_utils import DeferredAttribute
 
-from .models import Exercise, Profile
+from .models import Exercise, ExerciseInstance, Profile, Set
 
 
 @login_required
@@ -32,3 +33,22 @@ def exercise_page(request, exercise_id):
     return render(request=request,
                   template_name='tracker/exercise.html',
                   context={'exercise': exercise})
+
+
+def exercise_instance_list(request):
+    ''' List all exercise instances related to a given profile.'''
+    profile = get_object_or_404(Profile, user=request.user)
+    return render(request=request,
+                  template_name='tracker/activities.html',
+                  context={'profile': profile})
+
+
+def exercise_instance_page(request, instance_id):
+    ''' Detailed view of an Exercise Instance.'''
+    exercise_instance = get_object_or_404(ExerciseInstance, pk=instance_id)
+    set_attr_keys = [k.replace('_', '') for k, i in Set.__dict__.items()
+                     if isinstance(i, DeferredAttribute) and k != 'id']
+    return render(request=request,
+                  template_name='tracker/activity.html',
+                  context={'instance': exercise_instance,
+                           'set_attr': set_attr_keys})

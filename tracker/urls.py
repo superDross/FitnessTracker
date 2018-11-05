@@ -5,4 +5,6 @@ urlpatterns = [
     path('profile/', views.profile_page, name='profile_page'),
     path('exercises/', views.exercise_list, name='exercises'),
     path('exercise/<int:exercise_id>/', views.exercise_page, name='exercise'),
+    path('activities/', views.exercise_instance_list, name='activities'),
+    path('instance/<uuid:instance_id>/', views.exercise_instance_page, name='activity'),
 ]

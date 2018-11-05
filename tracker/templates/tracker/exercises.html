@@ -6,7 +6,6 @@
 <h2> {{ profile.user.first_name }} {{ profile.user.last_name }} </h2>
 <h4> {{ profile.user.username }} </h3>
   {% for exercise in profile.all_exercises %}
-    {# have a link to the individual exercises here #}
     <li>
       - <a href="{{ exercise.get_absolute_url }}"> {{ exercise.name }} </a>
     </li>

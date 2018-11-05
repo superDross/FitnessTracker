@@ -1,0 +1,15 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+
+<h2>Activity</h2>
+  {% for instance in profile.all_exercise_instances %}
+    <li>
+      - <a href="{{ instance.get_absolute_url }}">
+	  {{ instance.exercise.name }} - {{ instance.date }}
+        </a>
+    </li>
+  {% endfor %}
+
+
+{% endblock %}
