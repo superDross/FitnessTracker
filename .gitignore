@@ -1,8 +1,8 @@
 # pipenv and vim specific file
-Pipfile*
 tags
 *.vim
 sessions/
+*.ipynb
 
 *pyc
 *txt
