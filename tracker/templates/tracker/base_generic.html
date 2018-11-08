@@ -1,13 +1,35 @@
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
-	{% block title %}
-	  <title>Fitness Tracker</title>
-	{% endblock %}
+{% block title %}
+  <title>Fitness Tracker</title>
+{% endblock %}
 </head>
 <body>
-	{% block content %}
-	<h1>Template Page</h1>
-	{% endblock %}
+  <div class="container">
+    <div class='row'>
+      <div class="col1">
+      {% block sidebar %}
+      <ul class="sidebar-nav">
+        <hr>
+        {% if user.is_authenticated %}
+          <li>User: {{ user.get_username }}</li>
+	  <li><a href="{% url 'profile_page' %}">Profile</a></li>
+	  <li><a href="{% url 'activities' %}">Activity Log</a></li>
+	  <li><a href="{% url 'exercises' %}">My Exercises</a></li>
+          <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>   
+	{% else %}
+	  <li><a href="{% url 'login'%}?next={{request.path}}">Login</a></li>   
+	{% endif %}
+	<hr>
+	{# index page will be here #}
+     {% endblock %}
+     </div>
+     <div class="col2">
+       {% block content %}
+       {% endblock %}
+     </div>
+   </div>
+ </div>
 </body>
 </html>
