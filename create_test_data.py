@@ -7,6 +7,7 @@ Usage:
 import datetime
 
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 from tracker.models import (
     Profile, Exercise, ExerciseInstance,
@@ -16,6 +17,7 @@ from tracker.models import (
 
 # Users & Profiles
 u = User.objects.create(username='davidr',
+                        last_login=timezone.now(),
                         first_name='David',
                         last_name='Ross',
                         is_superuser=True,
@@ -34,9 +36,11 @@ owner = Profile.objects.create(user=u,
 owner.save()
 
 u = User.objects.create(username='test_user',
+                        last_login=timezone.now(),
                         is_superuser=False,
                         email='example@gmail.com')
 u.set_password('password')
+u.save()
 p = Profile.objects.create(user=u,
                            height_unit='cm',
                            weight_unit='kg',
@@ -136,23 +140,23 @@ d_set3.save()
 
 
 # Exercise Instances
-pull_up_1 = ExerciseInstance.objects.create(participant=test_user,
+pull_up_1 = ExerciseInstance.objects.create(participant=p,
                                             exercise=pull_up,
                                             mood='m',
                                             fatigued=False,
                                             date=datetime.date(2018, 9, 9))
 pull_up_1.sets.add(pu_set1, pu_set2, pu_set3)
-pull_up1.save()
+pull_up_1.save()
 
-pull_up_2 = ExerciseInstance.objects.create(participant=test_user,
+pull_up_2 = ExerciseInstance.objects.create(participant=p,
                                             exercise=pull_up,
                                             mood='e',
                                             fatigued=False,
-                                            date=datetime.date(2018, 9, 9))
+                                            date=datetime.date(2018, 10, 9))
 pull_up_2.sets.add(pu_set1, pu_set1, pu_set2)
-pull_up2.save()
+pull_up_2.save()
 
-pl_1 = ExerciseInstance.objects.create(participant=test_user,
+pl_1 = ExerciseInstance.objects.create(participant=p,
                                        exercise=push_up,
                                        mood='e',
                                        fatigued=False,
@@ -160,7 +164,7 @@ pl_1 = ExerciseInstance.objects.create(participant=test_user,
 pl_1.sets.add(pl_set1, pl_set1, pl_set2)
 pl_1.save()
 
-d_1 = ExerciseInstance.objects.create(participant=test_user,
+d_1 = ExerciseInstance.objects.create(participant=p,
                                       exercise=dip,
                                       mood='u',
                                       fatigued=False,

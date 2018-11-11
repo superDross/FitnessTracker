@@ -2,7 +2,6 @@
 tags
 *.vim
 sessions/
-*.ipynb
 
 *pyc
 *txt
