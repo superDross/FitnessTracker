@@ -5,7 +5,7 @@ from tracker.models import Set
 import pandas as pd
 
 
-class InstanceSetDict(object):
+class InstanceSetTable(object):
     ''' Transform an ExerciseInstance objects set data into a dict.'''
 
     def __init__(self, instance):
@@ -67,7 +67,7 @@ class InstanceSetDict(object):
         df['Sets'] = df.index + 1
         df['Date'] = self.instance.date
         df['Exercise'] = self.instance.exercise.name
-        df = df.set_index(['Exercise', 'Date', 'Sets'])
+        df = df.set_index(['Date', 'Exercise', 'Sets'])
         return df
 
     def to_html(self):
@@ -80,9 +80,8 @@ def exercise_instance_table(qs):
     # Get all instance by Exercise Type
     all_dfs = []
     for instance in qs:
-        df = InstanceSetDict(instance).to_dataframe()
+        df = InstanceSetTable(instance).to_dataframe()
         all_dfs.append(df)
-
-    big_table = pd.concat(all_dfs, sort=False).T
+    big_table = pd.concat(all_dfs, sort=False)
     big_table = big_table.fillna('-')
     return big_table.to_html()
