@@ -22,6 +22,7 @@ class Profile(models.Model):
                                 on_delete=models.CASCADE,
                                 related_name='profile')
     height_unit = models.CharField(max_length=50, null=True, blank=True)
+    distance_unit = models.CharField(max_length=50, null=True, blank=True)
     weight_unit = models.CharField(max_length=50, null=True, blank=True)
     _height = MeasurementField(measurement=Distance)
     _weight = MeasurementField(measurement=Weight)

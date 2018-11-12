@@ -25,6 +25,7 @@ u = User.objects.create(username='davidr',
 u.set_password('Strokes_01!')
 u.save()
 owner = Profile.objects.create(user=u,
+                               distance_unit='km',
                                height_unit='cm',
                                weight_unit='kg',
                                height=181,
@@ -42,6 +43,7 @@ u = User.objects.create(username='test_user',
 u.set_password('password')
 u.save()
 p = Profile.objects.create(user=u,
+                           distance_unit='miles',
                            height_unit='cm',
                            weight_unit='kg',
                            height=190,
