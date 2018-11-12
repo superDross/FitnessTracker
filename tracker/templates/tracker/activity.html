@@ -11,18 +11,6 @@ table, th, td {
 </style>
 </head>
 
-<h2> {{ instance.exercise.name }} </h2>
-<h3> {{ instance.date }}</h3>
-
-<table>
-  <tr>
-  {% for attr in set_attr %}
-    <th>{{ attr }}</th>
-    {% for aset in instance.sets.all %}
-      <td>{{ aset|getattribute:attr }}</td>
-    {% endfor %}
-  </tr>
-  {% endfor %}
-</table>
+{{ table | safe }}
 
 {% endblock %}

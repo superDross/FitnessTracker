@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models.query_utils import DeferredAttribute
 
 from .models import Exercise, ExerciseInstance, Profile, Set
+from .tables.tables import exercise_instance_table
 
 
 @login_required
@@ -46,9 +47,7 @@ def exercise_instance_list(request):
 def exercise_instance_page(request, instance_id):
     ''' Detailed view of an Exercise Instance.'''
     exercise_instance = get_object_or_404(ExerciseInstance, pk=instance_id)
-    set_attr_keys = [k.replace('_', '') for k, i in Set.__dict__.items()
-                     if isinstance(i, DeferredAttribute) and k != 'id']
+    instance_table = exercise_instance_table([exercise_instance])
     return render(request=request,
                   template_name='tracker/activity.html',
-                  context={'instance': exercise_instance,
-                           'set_attr': set_attr_keys})
+                  context={'table': instance_table})
