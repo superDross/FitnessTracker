@@ -1,9 +1,12 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.db.models.query_utils import DeferredAttribute
+from django.http import HttpResponse
+from django.template import loader
 
 from .models import Exercise, ExerciseInstance, Profile, Set
 from .tables.tables import exercise_instance_table
+from .forms import DateForm
 
 
 @login_required
@@ -51,3 +54,26 @@ def exercise_instance_page(request, instance_id):
     return render(request=request,
                   template_name='tracker/activity.html',
                   context={'table': instance_table})
+
+
+# A list view that precedes this which gives you links
+# to pages that can filter instances by date range,
+# classification, exercise etc.
+def test_view(request):
+    ''' Test filtering exercise instances by date ranges.'''
+    if request.method == 'POST':
+        form = DateForm(request.POST)
+        if form.is_valid():
+            start_date = form.cleaned_data['start_date']
+            end_date = form.cleaned_data['end_date']
+            qs = ExerciseInstance.objects.filter(
+                date__range=(start_date, end_date))
+            instance_table = exercise_instance_table(qs)
+            return render(request=request,
+                          template_name='tracker/activity.html',
+                          context={'table': instance_table})
+    # GET
+    else:
+        return render(request=request,
+                      template_name='tracker/generic_form.html',
+                      context={'form': DateForm()})

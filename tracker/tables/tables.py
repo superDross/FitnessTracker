@@ -27,6 +27,15 @@ class InstanceSetDict(object):
         ''' Add set attributes as keys to the table dict.'''
         self.dict = {k.capitalize(): [] for k in self.attributes}
 
+    def _change_keys(self):
+        ''' Alters the distance and weight keys to include units.'''
+        weight_unit = self.instance.participant.weight_unit
+        self.dict[f'Weight ({weight_unit})'] = self.dict['Weight']
+        distance_unit = self.instance.participant.distance_unit
+        self.dict[f'Distance ({distance_unit})'] = self.dict['Distance']
+        del self.dict['Distance']
+        del self.dict['Weight']
+
     def _get_set_value(self, aset, attr):
         ''' Get the value of a given Set objects attribute.'''
         set_value = getattr(aset, attr)
@@ -50,6 +59,7 @@ class InstanceSetDict(object):
     def _create_dict(self):
         self._add_header()
         self._add_set_data()
+        self._change_keys()
 
     def to_dataframe(self):
         df = pd.DataFrame.from_dict(self.dict)
@@ -74,4 +84,5 @@ def exercise_instance_table(qs):
         all_dfs.append(df)
 
     big_table = pd.concat(all_dfs, sort=False).T
+    big_table = big_table.fillna('-')
     return big_table.to_html()
