@@ -8,5 +8,12 @@ class DateForm(forms.Form):
     start_date = forms.DateField(widget=SelectDateWidget())
     end_date = forms.DateField(widget=SelectDateWidget())
 
+
 class ExerciseForm(forms.Form):
-    exercise = forms.ModelChoiceField(queryset=Exercise.objects.all())
+    def __init__(self, *args, **kwargs):
+        # set ModelChoiceForm to parsed querset
+        qs = kwargs.pop('queryset')
+        super().__init__(*args, **kwargs)
+        self.fields['exercise'].queryset = qs
+
+    exercise = forms.ModelChoiceField(queryset=Exercise.objects.none())

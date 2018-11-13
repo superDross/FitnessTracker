@@ -6,7 +6,7 @@ from django.template import loader
 
 from .models import Exercise, ExerciseInstance, Profile, Set
 from .tables.tables import exercise_instance_table
-from .forms import DateForm
+from .forms import DateForm, ExerciseForm
 
 
 @login_required
@@ -59,7 +59,7 @@ def exercise_instance_page(request, instance_id):
 # A list view that precedes this which gives you links
 # to pages that can filter instances by date range,
 # classification, exercise etc.
-def test_view(request):
+def exercise_instance_date_table(request):
     ''' Test filtering exercise instances by date ranges.'''
     if request.method == 'POST':
         form = DateForm(request.POST)
@@ -77,3 +77,29 @@ def test_view(request):
         return render(request=request,
                       template_name='tracker/generic_form.html',
                       context={'form': DateForm()})
+
+
+def exercise_instance_exercise_table(request):
+    profile = Profile.objects.get(user__id=request.user.id)
+    qs = profile.all_exercises()
+    if request.method == 'POST':
+        # parse user created exercises to form
+        form = ExerciseForm(request.POST, queryset=qs)
+        if form.is_valid():
+            exercise = form.cleaned_data['exercise']
+            qs = ExerciseInstance.objects.filter(
+                exercise=exercise)
+            instance_table = exercise_instance_table(qs)
+            return render(request=request,
+                          template_name='tracker/activity.html',
+                          context={'table': instance_table})
+    # GET
+    else:
+        # parse user created exercises to form
+        return render(request=request,
+                      template_name='tracker/generic_form.html',
+                      context={'form': ExerciseForm(queryset=qs)})
+
+
+def exercise_instance_class_table(request):
+    pass
