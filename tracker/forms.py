@@ -9,11 +9,11 @@ class DateForm(forms.Form):
     end_date = forms.DateField(widget=SelectDateWidget())
 
 
-class ExerciseForm(forms.Form):
+class ModelChoiceForm(forms.Form):
     def __init__(self, *args, **kwargs):
         # set ModelChoiceForm to parsed querset
         qs = kwargs.pop('queryset')
         super().__init__(*args, **kwargs)
-        self.fields['exercise'].queryset = qs
+        self.fields['objects'].queryset = qs
 
-    exercise = forms.ModelChoiceField(queryset=Exercise.objects.none())
+    objects = forms.ModelChoiceField(queryset=Exercise.objects.none())

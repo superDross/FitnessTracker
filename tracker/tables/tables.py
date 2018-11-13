@@ -75,13 +75,17 @@ class InstanceSetTable(object):
         return pd.DataFrame.to_html(df)
 
 
-def exercise_instance_table(qs):
-    ''' Create a HTML table from a given ExerciseInstance QuerySet'''
-    # Get all instance by Exercise Type
+def exercise_instance_table(qs, sort_column='Date'):
+    ''' Create a HTML table from a given ExerciseInstance QuerySet.
+
+    Args:
+        qs (QuerySet): ExercisesInstances.
+    '''
     all_dfs = []
     for instance in qs:
         df = InstanceSetTable(instance).to_dataframe()
         all_dfs.append(df)
     big_table = pd.concat(all_dfs, sort=False)
     big_table = big_table.fillna('-')
+    big_table = big_table.sort_values(by=sort_column, axis=0)
     return big_table.to_html()

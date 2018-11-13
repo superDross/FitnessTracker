@@ -4,9 +4,9 @@ from django.db.models.query_utils import DeferredAttribute
 from django.http import HttpResponse
 from django.template import loader
 
-from .models import Exercise, ExerciseInstance, Profile, Set
+from .models import Exercise, ExerciseInstance, Profile, Set, Classification
 from .tables.tables import exercise_instance_table
-from .forms import DateForm, ExerciseForm
+from .forms import DateForm, ModelChoiceForm
 
 
 @login_required
@@ -84,22 +84,44 @@ def exercise_instance_exercise_table(request):
     qs = profile.all_exercises()
     if request.method == 'POST':
         # parse user created exercises to form
-        form = ExerciseForm(request.POST, queryset=qs)
+        form = ModelChoiceForm(request.POST, queryset=qs)
         if form.is_valid():
-            exercise = form.cleaned_data['exercise']
+            exercise = form.cleaned_data['objects']
             qs = ExerciseInstance.objects.filter(
                 exercise=exercise)
             instance_table = exercise_instance_table(qs)
             return render(request=request,
                           template_name='tracker/activity.html',
                           context={'table': instance_table})
-    # GET
     else:
         # parse user created exercises to form
         return render(request=request,
                       template_name='tracker/generic_form.html',
-                      context={'form': ExerciseForm(queryset=qs)})
+                      context={'form': ModelChoiceForm(queryset=qs)})
 
 
 def exercise_instance_class_table(request):
-    pass
+    profile = Profile.objects.get(user__id=request.user.id)
+    qs = Classification.objects.all()
+    if request.method == 'POST':
+        form = ModelChoiceForm(request.POST, queryset=qs)
+        if form.is_valid():
+            classification = form.cleaned_data['objects']
+            exercises = classification.exercise_set.all()
+            instances = ExerciseInstance.objects.filter(exercise__in=exercises,
+                   participant=profile)
+            if instances:
+                instance_table = exercise_instance_table(instances)
+                template = 'tracker/activity.html'
+                context = {'table': instance_table}
+            else:
+                template = 'tracker/error.html'
+                context = {'classification': classification}
+            return render(request=request,
+                          template_name=template,
+                          context=context)
+
+    else:
+        return render(request=request,
+                      template_name='tracker/generic_form.html',
+                      context={'form': ModelChoiceForm(queryset=qs)})

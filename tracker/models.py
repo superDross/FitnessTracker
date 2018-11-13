@@ -31,7 +31,8 @@ class Profile(models.Model):
     country = CountryField()
     time_zone = models.CharField(
         max_length=100, blank=True, null=True,
-        choices=TIMEZONES, default='UTC')
+        choices=TIMEZONES, default='UTC'
+    )
     age = models.IntegerField(default=0)
 
     def __str__(self):
