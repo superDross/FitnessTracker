@@ -3,13 +3,16 @@
 {% block content %}
 
 <h2>Activity</h2>
-  {% for instance in profile.all_exercise_instances %}
-    <li>
-      - <a href="{{ instance.get_absolute_url }}">
-	  {{ instance.exercise.name }} - {{ instance.date }}
-        </a>
-    </li>
-  {% endfor %}
-
-
+  <li>
+    <a href="/tracker/activities/table/date/">- By Date</a>
+  </li>
+  <li>
+    <a href="/tracker/activities/table/class/">- By Class</a>
+  </li>
+  <li>
+    <a href="/tracker/activities/table/exercise/">- By Exercise</a>
+  </li>
+  <li>
+    <a href="/tracker/activities/table/instance/">- By Instance</a>
+  </li>
 {% endblock %}

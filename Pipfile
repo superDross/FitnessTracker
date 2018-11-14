@@ -14,6 +14,7 @@ django-extensions = "*"
 django-countries = "*"
 pytz = "*"
 jupyter = "*"
+pandas = "*"
 
 [dev-packages]
 

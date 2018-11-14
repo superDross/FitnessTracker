@@ -6,7 +6,7 @@ urlpatterns = [
     path('exercises/', views.exercise_list, name='exercises'),
     path('exercise/<int:exercise_id>/', views.exercise_page, name='exercise'),
     path('activities/',
-         views.exercise_instance_list,
+         views.activity_navigator,
          name='activities'),
     path('activities/table/date/',
          views.exercise_instance_date_table,

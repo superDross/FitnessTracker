@@ -39,11 +39,19 @@ def exercise_page(request, exercise_id):
                   context={'exercise': exercise})
 
 
-def exercise_instance_list(request):
+def activity_navigator(request):
     ''' List all exercise instances related to a given profile.'''
     profile = get_object_or_404(Profile, user=request.user)
     return render(request=request,
                   template_name='tracker/activities.html',
+                  context={'profile': profile})
+
+
+def exercise_instance_list(request):
+    ''' List all exercise instances related to a given profile.'''
+    profile = get_object_or_404(Profile, user=request.user)
+    return render(request=request,
+                  template_name='tracker/instance_list.html',
                   context={'profile': profile})
 
 
@@ -109,7 +117,7 @@ def exercise_instance_class_table(request):
             classification = form.cleaned_data['objects']
             exercises = classification.exercise_set.all()
             instances = ExerciseInstance.objects.filter(exercise__in=exercises,
-                   participant=profile)
+                                                        participant=profile)
             if instances:
                 instance_table = exercise_instance_table(instances)
                 template = 'tracker/activity.html'
